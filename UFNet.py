@@ -33,4 +33,4 @@ class PixelNet(nn.Module):
 #         x13= self.relu(x12)
 #         x14= self.fc3(x13)
         
-        return x14
+        return x13
