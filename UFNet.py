@@ -96,6 +96,9 @@ import torch
 import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
+
+import torch.nn.functional as f
+
 class PixelNet(nn.Module):
     def __init__(self,n_channels):
         super(PixelNet, self).__init__()
@@ -105,8 +108,8 @@ class PixelNet(nn.Module):
         self.conv2 = nn.Conv1d(32, 64, 3)
         self.conv3 = nn.Conv1d(64, 128, 3)
         self.fc1   = nn.Linear(60*128, 64)
-        self.fc2   = nn.Linear(64, 3)
-        self.fc3   = nn.Linear(64,3)
+        self.fc2   = nn.Linear(64, 7)
+        self.fc3   = nn.Linear(64, 7)
         self.sigmoid = nn.Sigmoid()
         
 #         self.fc3   = nn.Linear(256, 1)
@@ -125,11 +128,12 @@ class PixelNet(nn.Module):
         x10= self.fc1(x9)
         x11= self.relu(x10)
         x12= self.fc2(x11)
+        x13 = f.normalize(x12, p=2, dim=1)
 #         x13 = self.relu(x12)
 #         x14 = self.fc3(x13)
 #         x15 = self.sigmoid(x14)
-        norm1 = x12.norm(keepdim=True)
-        x13 = x12.div(norm1.expand_as(x12))
+#         norm1 = x12.norm(keepdim=True)
+#         x13 = x12.div(norm1.expand_as(x12))
 #         x13= self.relu(x12)
 #         x14= self.fc3(x13)
         
